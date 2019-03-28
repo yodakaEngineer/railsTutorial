@@ -6,7 +6,9 @@ class User < ApplicationRecord
   validates :name, presence: true, length: { maximum: 50 }
   validates :email, presence: true, length: { maximum: 255 }, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
   has_secure_password
-  validates :password, presence: true, length: { minimum: 6 }
+  # has_secure_passwordでオブジェクト生成時に存在のチェックが行われている。
+  # validateでallow_nil: trueにすればフォーム時点での空チェックがなくなるので更新時にパスワードを打つ必要がなくなる。
+  validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
 
   # 渡された文字列のハッシュ値を返す
   def self.digest(string)
